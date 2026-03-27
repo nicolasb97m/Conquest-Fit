@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import conquestIcon from "@/assets/conquest-icon.png";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Splash() {
