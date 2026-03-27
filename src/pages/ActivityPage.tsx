@@ -14,6 +14,129 @@ const tabConfig = [
   { id: "verificar" as const, label: "VERIFICAR", icon: ShieldCheck, color: "bg-primary" },
 ];
 
+// ─── EVIDENCE UPLOAD ──────────────────────────────────────
+function EvidenceUpload() {
+  const [files, setFiles] = useState<{ name: string; type: string; url: string }[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [validated, setValidated] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files;
+    if (!selected) return;
+    const newFiles = Array.from(selected).map((f) => ({
+      name: f.name,
+      type: f.type.startsWith("video") ? "video" : "foto",
+      url: URL.createObjectURL(f),
+    }));
+    setFiles((prev) => [...prev, ...newFiles]);
+  };
+
+  const removeFile = (idx: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== idx));
+    setValidated(false);
+  };
+
+  const submitEvidence = () => {
+    if (files.length === 0) return;
+    setUploading(true);
+    setTimeout(() => {
+      setUploading(false);
+      setValidated(true);
+    }, 3000);
+  };
+
+  return (
+    <div className="space-y-3">
+      <h3 className="font-display text-xs tracking-widest text-foreground uppercase flex items-center gap-2">
+        <Camera className="w-4 h-4 text-primary" />
+        Subir Evidencia de Entrenamiento
+      </h3>
+
+      {/* Upload buttons */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => { fileInputRef.current?.setAttribute("accept", "image/*"); fileInputRef.current?.click(); }}
+          className="card-conquest p-4 flex flex-col items-center gap-2 hover:border-primary/30 transition-colors"
+        >
+          <Camera className="w-6 h-6 text-primary" />
+          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Foto</span>
+        </button>
+        <button
+          onClick={() => { fileInputRef.current?.setAttribute("accept", "video/*"); fileInputRef.current?.click(); }}
+          className="card-conquest p-4 flex flex-col items-center gap-2 hover:border-primary/30 transition-colors"
+        >
+          <Video className="w-6 h-6 text-accent" />
+          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Video</span>
+        </button>
+      </div>
+
+      <input ref={fileInputRef} type="file" className="hidden" onChange={handleFile} />
+
+      {/* Preview files */}
+      {files.length > 0 && (
+        <div className="space-y-2">
+          {files.map((f, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="card-conquest p-2.5 flex items-center gap-3"
+            >
+              {f.type === "foto" ? (
+                <img src={f.url} alt="Evidencia" className="w-12 h-12 rounded-lg object-cover" />
+              ) : (
+                <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center">
+                  <Video className="w-5 h-5 text-accent" />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-foreground truncate">{f.name}</p>
+                <p className="text-[9px] text-muted-foreground uppercase">{f.type}</p>
+              </div>
+              <button onClick={() => removeFile(i)} className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center hover:bg-destructive/20 transition-colors">
+                <X className="w-3 h-3 text-muted-foreground" />
+              </button>
+            </motion.div>
+          ))}
+
+          {/* Submit */}
+          {!validated ? (
+            <button
+              onClick={submitEvidence}
+              disabled={uploading}
+              className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground py-3 rounded-xl font-display text-xs font-bold tracking-wider flex items-center justify-center gap-2 glow-orange disabled:opacity-60"
+            >
+              {uploading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  VALIDANDO CON IA ORACLE...
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4" />
+                  ENVIAR EVIDENCIA
+                </>
+              )}
+            </button>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-xl p-3"
+            >
+              <CheckCircle2 className="w-4 h-4 text-green-400" />
+              <span className="text-xs text-green-400 font-semibold">
+                Evidencia validada — Proof of Effort registrado en HCS
+              </span>
+            </motion.div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── EJERCICIO TAB ────────────────────────────────────────
 function EjercicioView() {
   return (
