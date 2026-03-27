@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import conquestIcon from "@/assets/conquest-icon.png";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Splash() {
@@ -32,15 +33,15 @@ export default function Splash() {
         <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-60 h-60 bg-accent/5 rounded-full blur-[80px]" />
       </div>
 
-      {/* Title */}
-      <motion.h1
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 mb-10 font-display text-3xl font-bold tracking-wider text-primary"
-      >
-        CONQUESTFIT
-      </motion.h1>
+      {/* Icon */}
+      <motion.img
+        src={conquestIcon}
+        alt="ConquestFit"
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative z-10 w-24 h-auto mb-10"
+      />
 
       {/* Login Form */}
       <motion.form
