@@ -1,8 +1,8 @@
 import { motion, AnimatePresence, type Easing } from "framer-motion";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
-import { Dumbbell, UtensilsCrossed, ShieldCheck, Flame, Heart, Clock, RefreshCw, Camera, Loader2, CheckCircle2, ThumbsUp, ThumbsDown } from "lucide-react";
-import { useState } from "react";
+import { Dumbbell, UtensilsCrossed, ShieldCheck, Flame, Heart, Clock, RefreshCw, Camera, Video, Loader2, CheckCircle2, ThumbsUp, ThumbsDown, Upload, X, Image } from "lucide-react";
+import { useState, useRef } from "react";
 
 type ActivityTab = "ejercicio" | "comida" | "verificar";
 
