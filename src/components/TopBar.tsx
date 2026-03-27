@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import agentLogo from "@/assets/agent-logo.png";
 
 interface TopBarProps {
   showRank?: boolean;
@@ -12,9 +13,9 @@ export default function TopBar({ showRank = true }: TopBarProps) {
     <div className="flex items-center justify-between px-4 py-3">
       <button
         onClick={() => navigate("/oracle")}
-        className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center hover:scale-110 transition-transform"
+        className="w-9 h-9 rounded-full overflow-hidden hover:scale-110 transition-transform"
       >
-        <span className="text-primary-foreground text-xs font-bold font-display">CF</span>
+        <img src={agentLogo} alt="ConquestFit Agent" className="w-full h-full object-cover" />
       </button>
       {showRank && (
         <motion.div
