@@ -32,15 +32,15 @@ export default function Splash() {
         <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-60 h-60 bg-accent/5 rounded-full blur-[80px]" />
       </div>
 
-      {/* Logo */}
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10 mb-10"
+      {/* Title */}
+      <motion.h1
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 mb-10 font-display text-3xl font-bold tracking-wider text-primary"
       >
-        <img src={conquestLogo} alt="ConquestFit" className="w-44 h-auto" />
-      </motion.div>
+        CONQUESTFIT
+      </motion.h1>
 
       {/* Login Form */}
       <motion.form
