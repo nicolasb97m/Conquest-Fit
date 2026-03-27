@@ -1,19 +1,34 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useState } from "react";
 import conquestLogo from "@/assets/conquest-logo.png";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Splash() {
   const navigate = useNavigate();
-  useEffect(() => {
-    const timer = setTimeout(() => navigate("/home"), 5000);
-    return () => clearTimeout(timer);
-  }, [navigate]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setError("Completa todos los campos");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    setTimeout(() => {
+      navigate("/home");
+    }, 1500);
+  };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden px-6">
       {/* Background glow */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 h-80 bg-primary/5 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-60 h-60 bg-accent/5 rounded-full blur-[80px]" />
       </div>
@@ -23,37 +38,81 @@ export default function Splash() {
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10"
+        className="relative z-10 mb-10"
       >
-        <img src={conquestLogo} alt="ConquestFit" className="w-56 h-auto" />
+        <img src={conquestLogo} alt="ConquestFit" className="w-44 h-auto" />
       </motion.div>
 
-      {/* Iniciando Sesión text */}
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
+      {/* Login Form */}
+      <motion.form
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1 }}
-        className="relative z-10 mt-12 text-primary font-display text-sm tracking-widest"
+        transition={{ duration: 0.6, delay: 0.3 }}
+        onSubmit={handleLogin}
+        className="relative z-10 w-full max-w-sm flex flex-col gap-4"
       >
-        Iniciando Sesión
-      </motion.p>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+        />
 
-      {/* Subtle animated dots */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="flex gap-1 mt-4"
-      >
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            className="w-1.5 h-1.5 rounded-full bg-primary"
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all pr-12"
           />
-        ))}
-      </motion.div>
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+        </div>
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-destructive text-xs text-center"
+          >
+            {error}
+          </motion.p>
+        )}
+
+        <motion.button
+          type="submit"
+          disabled={loading}
+          whileTap={{ scale: 0.97 }}
+          className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-display text-sm tracking-wider font-semibold hover:brightness-110 transition-all disabled:opacity-60"
+        >
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <motion.span
+                className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full inline-block"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+              />
+              INGRESANDO...
+            </span>
+          ) : (
+            "INICIAR SESIÓN"
+          )}
+        </motion.button>
+
+        <p className="text-center text-muted-foreground text-xs mt-2">
+          ¿No tienes cuenta?{" "}
+          <button type="button" className="text-primary hover:underline">
+            Regístrate
+          </button>
+        </p>
+      </motion.form>
     </div>
   );
 }
