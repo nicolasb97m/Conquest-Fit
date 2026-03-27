@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Easing } from "framer-motion";
 import TopBar from "@/components/TopBar";
 import ProgressRing from "@/components/ProgressRing";
 import BottomNav from "@/components/BottomNav";
@@ -22,9 +22,11 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
+const easeOut: Easing = "easeOut";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: easeOut } },
 };
 
 export default function Home() {
@@ -50,17 +52,12 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-2 gap-3">
             {metrics.map((m) => (
-              <div
-                key={m.label}
-                className="card-conquest p-3 flex flex-col gap-1"
-              >
+              <div key={m.label} className="card-conquest p-3 flex flex-col gap-1">
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wider flex items-center gap-1">
                   <m.icon className="w-3 h-3" />
                   {m.label}
                 </span>
-                <span className="text-lg font-bold font-display text-foreground">
-                  {m.value}
-                </span>
+                <span className="text-lg font-bold font-display text-foreground">{m.value}</span>
               </div>
             ))}
           </div>
@@ -68,11 +65,8 @@ export default function Home() {
 
         {/* Leaderboard */}
         <motion.div variants={fadeUp} className="space-y-3">
-          {leaderboard.map((user, i) => (
-            <div
-              key={user.name}
-              className="card-conquest p-3 flex items-center gap-3"
-            >
+          {leaderboard.map((user) => (
+            <div key={user.name} className="card-conquest p-3 flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/80 to-accent/80 flex items-center justify-center text-primary-foreground text-xs font-bold">
                 {user.avatar}
               </div>
