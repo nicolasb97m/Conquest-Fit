@@ -40,6 +40,9 @@ function EjercicioView() {
         </span>
       </button>
 
+      {/* Evidence Upload Section */}
+      <EvidenceUpload />
+
       {/* Active Routines Header */}
       <div className="flex items-center justify-between">
         <h2 className="font-display text-sm font-bold text-foreground">Mis Rutinas Activas</h2>
