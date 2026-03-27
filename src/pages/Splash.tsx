@@ -1,16 +1,14 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import conquestLogo from "@/assets/conquest-logo.png";
 
 export default function Splash() {
   const navigate = useNavigate();
-  const [showButton, setShowButton] = useState(false);
-
   useEffect(() => {
-    const timer = setTimeout(() => setShowButton(true), 2000);
+    const timer = setTimeout(() => navigate("/home"), 5000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden">
@@ -30,36 +28,32 @@ export default function Splash() {
         <img src={conquestLogo} alt="ConquestFit" className="w-56 h-auto" />
       </motion.div>
 
-      {/* Enter button */}
-      {showButton && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={() => navigate("/home")}
-          className="relative z-10 mt-12 text-primary font-display text-sm tracking-widest underline underline-offset-4 decoration-primary/50 hover:decoration-primary transition-all"
-        >
-          Iniciando Sesión
-        </motion.button>
-      )}
+      {/* Iniciando Sesión text */}
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 1 }}
+        className="relative z-10 mt-12 text-primary font-display text-sm tracking-widest"
+      >
+        Iniciando Sesión
+      </motion.p>
 
       {/* Subtle animated dots */}
-      {showButton && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex gap-1 mt-4"
-        >
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="w-1.5 h-1.5 rounded-full bg-primary"
-              animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
-            />
-          ))}
-        </motion.div>
-      )}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+        className="flex gap-1 mt-4"
+      >
+        {[0, 1, 2].map((i) => (
+          <motion.div
+            key={i}
+            className="w-1.5 h-1.5 rounded-full bg-primary"
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
+          />
+        ))}
+      </motion.div>
     </div>
   );
 }
